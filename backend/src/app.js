@@ -14,5 +14,7 @@ app.use("/api/courses", courseRoutes);
 app.get("/", (req, res) => {
     res.send("SkillNest API running");
 });
-
+app.get("/", (req, res) => {
+    res.send("🚀 SkillNest API is running");
+});
 export default app;
