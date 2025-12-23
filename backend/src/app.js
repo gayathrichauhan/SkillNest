@@ -1,21 +1,18 @@
 import express from "express";
 import cors from "cors";
 import courseRoutes from "./routes/course.routes.js";
-// ⬆️ make sure this path matches your actual file name
 
 const app = express();
 
-app.use(cors({
-    origin: "*"
-}));
+app.use(cors());
 app.use(express.json());
 
-// Health check
+// Test route
 app.get("/", (req, res) => {
     res.send("🚀 SkillNest Backend is live");
 });
 
-// ✅ IMPORTANT: mount courses routes
+// ✅ COURSES API
 app.use("/api/courses", courseRoutes);
 
 export default app;
