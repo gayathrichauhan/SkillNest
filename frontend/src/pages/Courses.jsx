@@ -6,20 +6,24 @@ const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
     const { addToCart, toast, setToast } = useCart();
 
     useEffect(() => {
         const fetchCourses = async () => {
             try {
                 const res = await fetch(
-                    import.meta.env.VITE_API_URL + "/api/courses"
+                    `${import.meta.env.VITE_API_URL}/api/courses`
                 );
-                if (!res.ok) throw new Error("Failed to fetch courses");
+
+                if (!res.ok) {
+                    throw new Error("Failed to fetch courses");
+                }
 
                 const data = await res.json();
                 setCourses(data);
             } catch (err) {
-                setError(err.message);
+                setError(err.message || "Something went wrong");
             } finally {
                 setLoading(false);
             }
