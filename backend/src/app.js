@@ -1,19 +1,25 @@
 import express from "express";
 import cors from "cors";
+import courseRoutes from "./routes/course.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
 app.use(
     cors({
-        origin: "https://skill-nest-sooty.vercel.app/",
+        origin: "https://skillnest-sooty.vercel.app",
+        methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     })
 );
 
 app.use(express.json());
 
-app.get("/api/courses", (req, res) => {
-    res.json({ message: "Courses working" });
+app.get("/", (req, res) => {
+    res.send("🚀 SkillNest Backend is live");
 });
 
-export default app;   // 🔴 THIS LINE WAS MISSING
+app.use("/api/courses", courseRoutes);
+app.use("/api/auth", authRoutes);
+
+export default app;
