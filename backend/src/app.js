@@ -10,3 +10,4 @@ app.use(
         credentials: true,
     })
 );
+export default app;
