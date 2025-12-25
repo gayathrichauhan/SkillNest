@@ -12,8 +12,7 @@ app.get("/", (req, res) => {
     res.send("🚀 SkillNest Backend is live");
 });
 
-// ✅ ROUTES
 app.use("/api/courses", courseRoutes);
-app.use("/api/auth", authRoutes); // 🔥 THIS WAS MISSING
+app.use("/api/auth", authRoutes);
 
 export default app;
