@@ -10,6 +10,7 @@ export default function Login() {
         email: "",
         password: "",
     });
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,30 +18,41 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        const res = await fetch("http://localhost:5000/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
+        try {
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/auth/login`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData),
+                }
+            );
 
-        const data = await res.json();
+            const data = await res.json();
 
-        if (!res.ok) {
-            alert(data.message);
-            return;
+            if (!res.ok) {
+                alert(data.message || "Login failed");
+                setLoading(false);
+                return;
+            }
+
+            login(data.user);
+            navigate("/");
+        } catch (err) {
+            alert("Server not reachable (Render may be waking up)");
+        } finally {
+            setLoading(false);
         }
-
-        login(data.user);
-        navigate("/");
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-3xl font-bold mb-2">Login</h2>
+                <h2 className="text-3xl font-bold mb-4">Login</h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
                     <input
                         type="email"
                         name="email"
@@ -59,8 +71,14 @@ export default function Login() {
                         className="w-full px-4 py-3 border rounded-lg"
                     />
 
-                    <button className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold">
-                        Login
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full py-3 rounded-lg font-semibold text-white ${
+                            loading ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+                        }`}
+                    >
+                        {loading ? "Logging in..." : "Login"}
                     </button>
                 </form>
 
