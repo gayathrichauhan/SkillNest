@@ -33,13 +33,12 @@ export default function Signup() {
 
             if (!res.ok) {
                 alert(data.message || "Signup failed");
-                setLoading(false);
                 return;
             }
 
             alert("Signup successful! Please login.");
             navigate("/login");
-        } catch (err) {
+        } catch {
             alert("Server not reachable (Render may be waking up)");
         } finally {
             setLoading(false);
@@ -82,7 +81,9 @@ export default function Signup() {
                         type="submit"
                         disabled={loading}
                         className={`w-full py-3 rounded-lg font-semibold text-white ${
-                            loading ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+                            loading
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-green-500 hover:bg-green-600"
                         }`}
                     >
                         {loading ? "Creating account..." : "Sign Up"}

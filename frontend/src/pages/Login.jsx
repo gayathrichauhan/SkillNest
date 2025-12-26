@@ -34,13 +34,12 @@ export default function Login() {
 
             if (!res.ok) {
                 alert(data.message || "Login failed");
-                setLoading(false);
                 return;
             }
 
             login(data.user);
             navigate("/");
-        } catch (err) {
+        } catch {
             alert("Server not reachable (Render may be waking up)");
         } finally {
             setLoading(false);
@@ -75,7 +74,9 @@ export default function Login() {
                         type="submit"
                         disabled={loading}
                         className={`w-full py-3 rounded-lg font-semibold text-white ${
-                            loading ? "bg-gray-400 cursor-not-allowed" : "bg-green-500 hover:bg-green-600"
+                            loading
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-green-500 hover:bg-green-600"
                         }`}
                     >
                         {loading ? "Logging in..." : "Login"}

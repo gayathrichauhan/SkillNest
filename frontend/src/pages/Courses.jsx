@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext.jsx";
 import Toast from "../components/Toast.jsx";
 
-
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -13,9 +12,13 @@ const Courses = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const res = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/courses`
-                );
+                const API = import.meta.env.VITE_API_URL;
+
+                if (!API) {
+                    throw new Error("API URL missing");
+                }
+
+                const res = await fetch(`${API}/api/courses`);
 
                 if (!res.ok) {
                     throw new Error("Failed to fetch courses");
@@ -24,7 +27,7 @@ const Courses = () => {
                 const data = await res.json();
                 setCourses(data);
             } catch (err) {
-                setError(err.message || "Something went wrong");
+                setError(err.message);
             } finally {
                 setLoading(false);
             }
@@ -35,12 +38,7 @@ const Courses = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-20">
-            {toast && (
-                <Toast
-                    message={toast}
-                    onClose={() => setToast("")}
-                />
-            )}
+            {toast && <Toast message={toast} onClose={() => setToast("")} />}
 
             <h1 className="text-4xl font-bold mb-10">Courses</h1>
 
@@ -67,15 +65,13 @@ const Courses = () => {
                             {course.description}
                         </p>
 
-                        <div className="flex justify-between items-center mb-4">
-                            <span className="font-bold text-green-600">
-                                ₹{course.price}
-                            </span>
-                        </div>
+                        <span className="font-bold text-green-600">
+                            ₹{course.price}
+                        </span>
 
                         <button
                             onClick={() => addToCart(course)}
-                            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold active:scale-95 transition"
+                            className="w-full mt-4 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold"
                         >
                             Add to Cart
                         </button>
