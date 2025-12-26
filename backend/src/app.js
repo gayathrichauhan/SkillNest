@@ -5,17 +5,14 @@ import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
-/* ✅ FIXED CORS (HANDLES PREFLIGHT TOO) */
+/* ✅ SIMPLE & SAFE CORS (Node 22 compatible) */
 app.use(
     cors({
         origin: "https://skillnest-sooty.vercel.app",
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
     })
 );
-
-/* ✅ VERY IMPORTANT */
-app.options("*", cors());
 
 app.use(express.json());
 
